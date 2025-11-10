@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# CashCard Spring Boot Application Runner
+# This script builds and runs the CashCard Spring Boot application
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Change to the project directory
+cd "$SCRIPT_DIR"
+
+# Check if gradlew exists and is executable
+if [ ! -x "./gradlew" ]; then
+    echo "Making gradlew executable..."
+    chmod +x ./gradlew
+fi
+
+# Parse command line arguments
+COMMAND="${1:-run}"
+
+case "$COMMAND" in
+    run)
+        echo "Starting CashCard application..."
+        ./gradlew bootRun --console=plain
+        ;;
+    build)
+        echo "Building CashCard application..."
+        ./gradlew build --console=plain
+        ;;
+    test)
+        echo "Running tests..."
+        ./gradlew test --console=plain
+        ;;
+    clean)
+        echo "Cleaning build artifacts..."
+        ./gradlew clean --console=plain
+        ;;
+    help|--help|-h)
+        echo "CashCard Application Runner"
+        echo ""
+        echo "Usage: cashcard [command]"
+        echo ""
+        echo "Commands:"
+        echo "  run     - Start the Spring Boot application (default)"
+        echo "  build   - Build the application"
+        echo "  test    - Run tests"
+        echo "  clean   - Clean build artifacts"
+        echo "  help    - Show this help message"
+        echo ""
+        echo "Examples:"
+        echo "  ./cashcard          # Start the application"
+        echo "  ./cashcard run      # Start the application"
+        echo "  ./cashcard build    # Build the application"
+        echo "  ./cashcard test     # Run tests"
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Run './cashcard help' for usage information"
+        exit 1
+        ;;
+esac
